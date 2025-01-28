@@ -1,33 +1,37 @@
 import random
+import sys
 
 def main():
     """Main function to run the Guess the Number game."""
     print("Welcome to the Guess the Number Game!")
     print("I have picked a number between 1 and 100.")
-    print("Try to guess it!")
 
     # Generate a random number between 1 and 100
     secret_number = random.randint(1, 100)
     attempts = 0
 
-    while True:
+    # Get guesses from command-line arguments
+    if len(sys.argv) < 2:
+        print("No guesses provided! Pass guesses as parameters.")
+        sys.exit(1)
+
+    guesses = sys.argv[1:]  # Read arguments passed after `python3 app.py`
+    for guess in guesses:
         try:
-            # Get the user's guess
-            guess = int(input("\nEnter your guess: "))
+            guess = int(guess)
             attempts += 1
 
-            # Check if the guess is correct
             if guess < secret_number:
-                print("Too low! Try again.")
+                print(f"Guess {guess} is too low!")
             elif guess > secret_number:
-                print("Too high! Try again.")
+                print(f"Guess {guess} is too high!")
             else:
-                print(f"Congratulations! You guessed the number {secret_number} in {attempts} attempts.")
+                print(f"🎉 Congratulations! You guessed the number {secret_number} in {attempts} attempts.")
                 break
         except ValueError:
-            print("Invalid input! Please enter a number.")
-
-    print("Thanks for playing! Goodbye!")
+            print(f"Invalid guess: {guess}. Please provide numbers only.")
+    else:
+        print(f"You did not guess the number. The correct number was {secret_number}.")
 
 if __name__ == "__main__":
     main()
